@@ -1,7 +1,5 @@
-package draft;
+package scenario;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class DefaultTest {
+public class ScenarioTest {
     private WebDriver driver;
     private WebDriverWait wait;
     private String websiteUrl = "https://parabank.parasoft.com/parabank/index.htm";
@@ -25,11 +23,11 @@ public class DefaultTest {
         driver.get(websiteUrl);
         driver.manage().window().maximize();
     }
-    @When("I enter valid {string} and {string}")
-    public void i_enter_valid_credential(String username, String password){
+    @When("I enter valid credential")
+    public void i_enter_valid_credential(){
         System.out.println("User enters valid credentials");
-        driver.findElement(By.name("username")).sendKeys(username);
-        driver.findElement(By.name("password")).sendKeys(password);
+        driver.findElement(By.name("username")).sendKeys("john");
+        driver.findElement(By.name("password")).sendKeys("demo");
         driver.findElement(By.cssSelector("input[value='Log In']")).click();
 
     }
