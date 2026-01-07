@@ -9,7 +9,11 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"scenario_outline",
             "base.dependenceInjection"
-        }
+        },
+        plugin = {"pretty",
+                "html:target/site/cucumber-pretty",
+                "json:target/cucumber.json"},
+        monochrome = true
 )
 public class TestRunner {}
 
