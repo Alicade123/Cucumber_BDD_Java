@@ -25,7 +25,7 @@ Feature: Login Functionality
       Examples:
         |username|password|fullName|
         |john|demo|John Smith|
-        |john|demo|John Smith|
+#        |john|demo|John Smith|
 
 
 ##  3. Table
