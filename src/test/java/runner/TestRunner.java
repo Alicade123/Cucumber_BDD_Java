@@ -7,13 +7,14 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = {"scenario_outline",
-            "base.dependenceInjection"
+        glue = {
+                "scenario_outline",
+                "base.dependenceInjection"
         },
-        plugin = {"pretty",
-                "html:target/site/cucumber-pretty",
-                "json:target/cucumber.json"},
+        plugin = {
+                "pretty",
+                "html:target/cucumber-report.html",
+                "json:target/cucumber-reports/Cucumber.json"},
         monochrome = true
 )
 public class TestRunner {}
-
