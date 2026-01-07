@@ -1,5 +1,6 @@
 package scenario;
 
+import base.dependenceInjection.BaseUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -26,6 +27,7 @@ public class ScenarioTest {
     @When("I enter valid credential")
     public void i_enter_valid_credential(){
         System.out.println("User enters valid credentials");
+
         driver.findElement(By.name("username")).sendKeys("john");
         driver.findElement(By.name("password")).sendKeys("demo");
         driver.findElement(By.cssSelector("input[value='Log In']")).click();
