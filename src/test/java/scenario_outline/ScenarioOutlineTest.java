@@ -11,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -39,11 +40,15 @@ public class ScenarioOutlineTest extends BaseUtil {
         driver.manage().window().maximize();
     }
     @When("I enter valid {string} and {string} with {string}")
-    public void i_enter_valid_credential(String username, String password, String fullName){
+    public void i_enter_valid_credential(String username, String password, String fullName) throws Exception{
         WebElement element = driver.findElement(By.id("leftPanel"));
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView({block:'center'})",element);
-        driver.findElement(By.name("username")).sendKeys(username);
-        driver.findElement(By.name("password")).sendKeys(password);
+        WebElement usernameElement  = driver.findElement(By.name("username"));
+        WebElement passwordElement  = driver.findElement(By.name("password"));
+        baseUtil.highLighter(driver, usernameElement);
+        usernameElement.sendKeys(username);
+        baseUtil.highLighter(driver, passwordElement);
+        passwordElement.sendKeys(password);
         driver.findElement(By.cssSelector("input[value='Log In']")).click();
         baseUtil.userFullName = fullName;
 
@@ -60,6 +65,11 @@ public class ScenarioOutlineTest extends BaseUtil {
         assertTrue("Something went wrong",actualResult.contains(expectedResult));
         driver.findElement(By.cssSelector("h1[class='title']")).isDisplayed();
         driver.findElement(By.linkText("Log Out")).click();
+    }
+    public ChromeOptions additionalAttributes(){
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        return options;
     }
 
     @After
