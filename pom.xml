@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>SDGroupId</groupId>
@@ -12,29 +14,32 @@
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <allure.version>2.32.0</allure.version>
     </properties>
 
     <dependencies>
-        <!-- 1.Selenium https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <!-- Selenium WebDriver -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>4.39.0</version>
         </dependency>
-        <!-- 2.Cucumber https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+
+        <!-- Cucumber -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <version>7.33.0</version>
         </dependency>
-        <!-- 3.cucumber-JUnit https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>7.33.0</version>
             <scope>test</scope>
         </dependency>
-        <!--4.Junit https://mvnrepository.com/artifact/junit/junit -->
+
+        <!-- JUnit 4 -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -42,27 +47,94 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- 5.Pico Container https://mvnrepository.com/artifact/io.cucumber/cucumber-picocontainer -->
+        <!-- PicoContainer for Dependency Injection -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
             <version>7.33.0</version>
         </dependency>
 
+        <!-- Allure Cucumber JVM -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber7-jvm</artifactId>
+            <version>${allure.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Allure JUnit integration -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit4</artifactId>
+            <version>${allure.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
     <build>
         <plugins>
+            <!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>  <!-- UPDATED: Latest version -->
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>17</source>  <!-- UPDATED: Use Java 17 or higher -->
+                    <target>17</target>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>3.2.5</version>  <!-- UPDATED: Latest version -->
                 <configuration>
+                    <!-- PARALLEL EXECUTION -->
                     <parallel>methods</parallel>
-                    <useUnlimitedThreads>true</useUnlimitedThreads>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <threadCount>4</threadCount>  <!-- CHANGED: Fixed 4 threads instead of unlimited -->
+                    <perCoreThreadCount>false</perCoreThreadCount>
+
+                    <!-- FAILURE HANDLING -->
+                    <testFailureIgnore>false</testFailureIgnore>  <!-- CHANGED: Fail build on test failure -->
+                    <rerunFailingTestsCount>1</rerunFailingTestsCount>  <!-- ADDED: Retry failed tests once -->
+
+                    <!-- TEST SELECTION -->
+                    <includes>
+                        <include>**/TestRunner.java</include>
+                    </includes>
+
+                    <!-- SYSTEM PROPERTIES -->
+                    <systemPropertyVariables>
+                        <cucumber.publish.quiet>true</cucumber.publish.quiet>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.7.8</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>Cucumber Test Report</projectName>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <inputDirectory>${project.build.directory}</inputDirectory>
+                            <jsonFiles>
+                                <param>**/*.json</param>
+                            </jsonFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
-
 </project>
