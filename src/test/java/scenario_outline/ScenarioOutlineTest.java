@@ -7,7 +7,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -38,8 +40,8 @@ public class ScenarioOutlineTest extends BaseUtil {
     }
     @When("I enter valid {string} and {string} with {string}")
     public void i_enter_valid_credential(String username, String password, String fullName){
-
-
+        WebElement element = driver.findElement(By.id("leftPanel"));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView({block:'center'})",element);
         driver.findElement(By.name("username")).sendKeys(username);
         driver.findElement(By.name("password")).sendKeys(password);
         driver.findElement(By.cssSelector("input[value='Log In']")).click();
